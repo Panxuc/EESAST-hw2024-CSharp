@@ -51,12 +51,13 @@ public class Student : IStudent
         Grade grade = new Grade(icredit, iscore);
         Grades.Add(course, grade);
     }
-    private List<(string, int, int)> grs = new List<(string, int, int)>();
+    //private List<(string, int, int)> grs = new List<(string, int, int)>();
     public void AddGrades(List<(string course, int credit, int score)> grades)
     {
         foreach (var grade in grades)
         {
-            grs.Add(grade);
+            Grade gr = new Grade(grade.credit, grade.score);
+            Grades.Add(grade.course, gr);
         }
     }
     public void RemoveGrade(string course)
@@ -67,11 +68,11 @@ public class Student : IStudent
     {
         foreach (var course in courses)
         {
-            foreach (var gr in grs)
+            foreach (var gr in Grades)
             {
-                if (gr.Item1 == course)
+                if (gr.Key == course)
                 {
-                    grs.Remove(gr);
+                    Grades.Remove(gr.Key);
                 }
             }
         }
