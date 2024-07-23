@@ -29,9 +29,9 @@ public class Student : IStudent
         ID = int.Parse(i);
         Grades = new Dictionary<string, Grade>();
     }
-    public string Name {get; set; }
-    public int ID {get; set; }
-    public Dictionary<string, Grade> Grades {get;}
+    public string Name { get; set; }
+    public int ID { get; set; }
+    public Dictionary<string, Grade> Grades { get; }
     public void AddGrade(string course, string credit, string score)
     {
         Grades.Add(course, new Grade(int.Parse(credit), int.Parse(score)));
@@ -66,7 +66,7 @@ public class Student : IStudent
     }
     public double GetTotalGradePoint()
     {
-        double gradePoint =0.0;
+        double gradePoint = 0.0;
         foreach (Grade grade in Grades.Values)
         {
             gradePoint += grade.GradePoint * grade.Credit;
@@ -76,7 +76,7 @@ public class Student : IStudent
     }
     public double GetGPA()
     {
-        return GetTotalGradePoint()/GetTotalCredit();
+        return GetTotalGradePoint() / GetTotalCredit();
     }
     public override string ToString()
     {
