@@ -23,7 +23,92 @@ public interface IStudent
 
 public class Student : IStudent
 {
-    // 请仅在此处实现接口，不要在此处以外的地方进行任何修改
-    // 请尽可能周全地考虑鲁棒性
-    // 提交作业时请删除这 3 行注释
+    private string name;
+    private int id;
+    private double totalGradePoint;
+    private double GPA;
+    private Dictionary<string, Grade> grades = new Dictionary<string, Grade>();
+    private List<(string, int, int)> courseList = new List<(string, int, int)>();
+    public Student(string name, string id)
+    {
+        this.name = name;
+        this.id = int.TryParse(id, out int result) ? result : 0;
+    }
+    public string Name
+    {
+        get { return name; }
+        set { name = value; }
+    }
+    public int ID
+    {
+        get { return id; }
+        set { id = value; }
+    }
+    public Dictionary<string, Grade> Grades
+    {
+        get
+        {
+            foreach (var item in courseList)
+            {
+                grades.Add(item.Item1, new Grade(item.Item2, item.Item3));
+            }
+            return grades;
+        }
+    }
+    public void AddGrade(string course, string credit, string score)
+    {
+        int credit_ = int.TryParse(credit, out int creditNum) ? creditNum : 0;
+        int score_ = int.TryParse(score, out int scoreNum) ? scoreNum : 0;
+        courseList.Add((course, credit_, score_));
+        grades.Add(course, new Grade(credit_, score_));
+    }
+    public void AddGrades(List<(string course, int credit, int score)> grades)
+    {
+        foreach (var item in grades)
+        {
+            courseList.Add((item.course, item.credit, item.score));
+            this.grades.Add(item.course, new Grade(item.credit, item.score));
+        }
+    }
+    public void RemoveGrade(string course)
+    {
+        courseList.RemoveAll(x => x.Item1 == course);
+        grades.Remove(course);
+    }
+    public void RemoveGrades(List<string> courses)
+    {
+        foreach (var course in courses)
+        {
+            courseList.RemoveAll(x => x.Item1 == course);
+            grades.Remove(course);
+        }
+    }
+    public int GetTotalCredit()
+    {
+        int totalCredit = 0;
+        foreach (var item in courseList)
+        {
+            totalCredit += item.Item2;
+        }
+        return totalCredit;
+    }
+    public double GetTotalGradePoint()
+    {
+        double totalGradePoint = 0;
+        foreach (var item in courseList)
+        {
+            totalGradePoint += item.Item3 * item.Item2;
+        }
+        return totalGradePoint;
+    }
+    public double GetGPA()
+    {
+        totalGradePoint = GetTotalGradePoint();
+        GPA = totalGradePoint / GetTotalCredit();
+        return GPA;
+    }
+    public override string ToString()
+    {
+        return $"Name: {name}, ID: {id}, GPA:{GetGPA()}";
+    }
 }
