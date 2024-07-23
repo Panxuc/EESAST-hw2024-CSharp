@@ -26,24 +26,14 @@ public class Student : IStudent
     // 请仅在此处实现接口，不要在此处以外的地方进行任何修改
     // 请尽可能周全地考虑鲁棒性
     // 提交作业时请删除这 3 行注释
-    private string name;
-    private int id;
-    public Student(string nam, string i)
+    public Student(string name, string i)
     {
-        name = nam;
-        id = int.Parse(i);
+        Name = name;
+        ID = int.Parse(i);
         Grades = new Dictionary<string, Grade>();
     }
-    public string Name
-    {
-        get { return name; }//应该正确
-        set { }
-    }
-    public int ID
-    {
-        get { return id;}//应该正确
-        set { }
-    }
+    public string Name {get; set; }
+    public int ID {get; set; }
     public Dictionary<string, Grade> Grades {get;}
     public void AddGrade(string course, string credit, string score)
     {
