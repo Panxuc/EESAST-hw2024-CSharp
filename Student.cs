@@ -95,9 +95,10 @@ public class Student : IStudent
     public double GetTotalGradePoint()
     {
         double totalGradePoint = 0;
-        foreach (var item in courseList)
+        for (int i = 0; i < grades.Count; ++i)
         {
-            totalGradePoint += item.Item3 * item.Item2;
+            string key = courseList[i].Item1;
+            totalGradePoint += grades[courseList[i].Item1].GradePoint * courseList[i].Item2;
         }
         return totalGradePoint;
     }
