@@ -32,58 +32,67 @@ public class Student : IStudent
     {
         name = nam;
         id = int.Parse(i);
+        Grades = new Dictionary<string, Grade>();
     }
-    string IStudent.Name
+    public string Name
     {
         get { return name; }//应该正确
         set { }
     }
-    int IStudent.ID
+    public int ID
     {
         get { return id;}//应该正确
         set { }
     }
-    Dictionary<string, Grade> IStudent.Grades
-    {
-        get { return new Dictionary<string, Grade>(); }//乱写的奥
-    }
+    public Dictionary<string, Grade> Grades {get;}
     public void AddGrade(string course, string credit, string score)
     {
-        Console.WriteLine(course, credit, score);
+        Grades.Add(course, new Grade(int.Parse(credit), int.Parse(score)));
     }
-    void IStudent.AddGrade(string course, string credit, string score)
+    public void AddGrades(List<(string course, int credit, int score)> grades)
     {
-        Console.WriteLine(course, credit, score);
+        foreach ((string course, int credit, int score) grade in grades)
+        {
+            Grades.Add(grade.course, new Grade(grade.credit, grade.score));
+        }
     }
-    void IStudent.AddGrades(List<(string course, int credit, int score)> grades)
+    public void RemoveGrade(string course)
     {
-        Console.WriteLine("AddGrades");
+        Grades.Remove(course);
     }
-    void IStudent.RemoveGrade(string course)
+    public void RemoveGrades(List<string> courses)
     {
-        Console.WriteLine("RemoveGrade");
+        foreach (string course in courses)
+        {
+            Grades.Remove(course);
+        }
     }
-    void IStudent.RemoveGrades(List<string> courses)
+    public int GetTotalCredit()
     {
-        Console.WriteLine("RemoveGrades");
-    }
-    int IStudent.GetTotalCredit()
-    {
-        Console.WriteLine("GetTotalCredit");
+        int totalCredit = 0;
+        foreach (Grade grade in Grades.Values)
+        {
+            totalCredit += grade.Credit;
+            return totalCredit;
+        }
         return 0;
     }
-    double IStudent.GetTotalGradePoint()
+    public double GetTotalGradePoint()
     {
-        Console.WriteLine("GetTotalGradePoint");
+        double gradePoint =0.0;
+        foreach (Grade grade in Grades.Values)
+        {
+            gradePoint += grade.GradePoint * grade.Credit;
+            return gradePoint;
+        }
         return 0.0;
     }
-    double IStudent.GetGPA()
+    public double GetGPA()
     {
-        Console.WriteLine("GetGPA");
-        return 0.0;
+        return GetTotalGradePoint()/GetTotalCredit();
     }
     public override string ToString()
     {
-        return "Student";
+        return $"姓名:{Name} 学号:{ID}";
     }
 }
