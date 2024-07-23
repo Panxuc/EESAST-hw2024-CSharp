@@ -39,18 +39,20 @@ public class Student : IStudent
     public void AddGrades(List<(string course, int credit, int score)> grades)
     {
         foreach ((string course, int credit, int score) grade in grades)
-        {
             Grades.Add(grade.course, new Grade(grade.credit, grade.score));
-        }
     }
     public void RemoveGrade(string course)
     {
+        if (!Grades.ContainsKey(course))
+            throw new Exception($"Course {course} does not exist in the grades.");
         Grades.Remove(course);
     }
     public void RemoveGrades(List<string> courses)
     {
         foreach (string course in courses)
         {
+            if (!Grades.ContainsKey(course))
+                throw new Exception($"Course {course} does not exist in the grades.");
             Grades.Remove(course);
         }
     }
@@ -58,21 +60,15 @@ public class Student : IStudent
     {
         int totalCredit = 0;
         foreach (Grade grade in Grades.Values)
-        {
             totalCredit += grade.Credit;
-            return totalCredit;
-        }
-        return 0;
+        return totalCredit;
     }
     public double GetTotalGradePoint()
     {
         double gradePoint = 0.0;
         foreach (Grade grade in Grades.Values)
-        {
             gradePoint += grade.GradePoint * grade.Credit;
-            return gradePoint;
-        }
-        return 0.0;
+        return gradePoint;
     }
     public double GetGPA()
     {
