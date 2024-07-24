@@ -23,7 +23,78 @@ public interface IStudent
 
 public class Student : IStudent
 {
-    // 请仅在此处实现接口，不要在此处以外的地方进行任何修改
-    // 请尽可能周全地考虑鲁棒性
-    // 提交作业时请删除这 3 行注释
+    private string name;
+    public string Name
+    {
+        get => name;
+        public set { name = value; }
+    }
+    private int id;
+    public int ID
+    {
+        get => id;
+        public set { id = value; }
+    }
+    private Dictionary<string, Grade> grades;
+    public Dictionary<string, Grade> Grades
+    {
+        get => grades;
+    }
+    public void AddGrade(string course, string credit, string score)
+    {
+        if(grades.ContainsKey(course))
+        {
+            Console.WriteLine("Grade of " + course + " exist");
+            return;
+        }
+        Grade grade = new Grade(int.Parse(credit), int.Parse(score));
+        grades.Add(course, grade);
+    }
+    public void AddGrades(List<(string course, int credit, int score)> grds)
+    {
+        foreach (var grd in grds)
+        {
+            AddGrade(grd.course,grd.credit, grd.score);
+        }
+    }
+    public void RemoveGrade(string course)
+    {
+        if (grades.ContainsKey(course))
+            grades.Remove(course);
+        else Console.WriteLine("Grade of " + course + " not exist");
+    }
+    public void RemoveGrades(List<string> courses)
+    {
+        foreach (string course in courses)
+            RemoveGrade(course);
+    }
+    public int GetTotalCredit()
+    {
+        int sum = 0;
+        foreach (var value in grades.Values)
+            sum += value.Credit;
+        return sum;
+    }
+    public double GetTotalGradePoint()
+    {
+        double sum = 0;
+        foreach (var value in grades.Values)
+            sum += value.GradePoint();
+        return sum;
+    }
+    public double GetGPA()
+    {
+        double sum = 0;
+        foreach (var value in grades.Values)
+            sum += value.Credit * value.GradePoint();
+        return sum / GetTotalCredit();
+    }
+    public string ToString()
+    {
+        var stdent = $"Name:{name}\nID: { id }\nCourse\tCredit\tScore\n";
+        foreach (var grade in grades)
+        {
+            stdent += $"{grade.Key}\t{grade.Value.Credit}\t{grade.Value.Score}\n";
+        }
+    }
 }
