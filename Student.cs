@@ -81,7 +81,7 @@ public class Student : IStudent
         double totalGradePoint = 0;
         foreach (var grade in Grades)
         {
-            totalGradePoint += grade.Value.GradePoint;
+            totalGradePoint += grade.Value.GradePoint*grade.Value.Credit;
         }
         return totalGradePoint;
     }
