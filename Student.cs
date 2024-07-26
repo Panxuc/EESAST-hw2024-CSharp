@@ -94,7 +94,7 @@ public class Student : IStudent
         double temp = 0;
         foreach (var kvp in this.grades)
         {
-            temp += kvp.Value.GradePoint;
+            temp += kvp.Value.GradePoint * kvp.Value.Credit;
         }
         return temp;
     }
