@@ -56,11 +56,14 @@ public class Student : IStudent
     public double GetGPA()
     {
         double GPA = 0;
+        double sum = 0;
         foreach (var grade in Grades)
         {
-            GPA += grade.Value.GradePoint;
+            GPA += grade.Value.GradePoint * grade.Value.Credit;
+            sum += grade.Value.Credit;
+
         }
-        return GPA / Convert.ToDouble(Grades.Count);
+        return GPA / sum;
     }
 
     public int GetTotalCredit()
