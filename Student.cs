@@ -37,7 +37,7 @@ public class Student : IStudent
     public Dictionary<string, Grade> Grades { get; } = [];
     public void AddGrade(string course, string credit, string score)
     {
-        if(Convert.ToInt32(score) < 0 || Convert.ToInt32(score) > 100)
+        if (Convert.ToInt32(score) < 0 || Convert.ToInt32(score) > 100)
         {
             Console.WriteLine("Invalid score. Please try again.");//虽然写了这一条但是好像在 AddGrade 被调用之前代码就检查了分数合法性
             return;
