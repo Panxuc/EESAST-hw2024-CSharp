@@ -26,14 +26,14 @@ public class Student : IStudent
     public Student(string name, string id)
     {
         this.name = name;
-        int num_id=0;
+        int num_id = 0;
         int.TryParse(id, out num_id);
         this.id = num_id;
         Grades = new Dictionary<string, Grade>();
     }
 
     private string name;
-    
+
     public string Name
     {
         get { return name; }
@@ -44,19 +44,19 @@ public class Student : IStudent
 
     public int ID
     {
-        get { return id;}
-        set { id = value >=0 ? value:0;}
+        get { return id; }
+        set { id = value >= 0 ? value : 0; }
     }
 
-    public Dictionary<string,Grade> Grades { get;}
+    public Dictionary<string, Grade> Grades { get; }
 
     public void AddGrade(string course, string credit, string score)
     {
-        
+
         string _course = course.Trim();
         string _score_temp = score.Trim();
         string _credit_temp = credit.Trim();
-            
+
         if (Grades != null && Grades.ContainsKey(_course))
         {
             Console.WriteLine("Course Grade Already Existed!");
@@ -64,7 +64,7 @@ public class Student : IStudent
         }
 
 
-        int  _credit = 0;
+        int _credit = 0;
         int _score = 0;
         int re_credit = 0;
         int re_score = 0;
@@ -77,7 +77,7 @@ public class Student : IStudent
             if (_score <= 100)
                 re_score = _score >= 0 ? _score : 0;
 
-        Grades.Add(_course,new Grade(re_credit, re_score));
+        Grades.Add(_course, new Grade(re_credit, re_score));
         return;
     }
 
@@ -94,8 +94,8 @@ public class Student : IStudent
 
     public void RemoveGrade(string course)
     {
-        if(Grades.ContainsKey(course.Trim()))
-            Grades.Remove(course); 
+        if (Grades.ContainsKey(course.Trim()))
+            Grades.Remove(course);
     }
 
     public void RemoveGrades(List<string> courses)
@@ -121,7 +121,7 @@ public class Student : IStudent
     public double GetTotalGradePoint()
     {
         double total_gp = 0;
-        foreach(var item in Grades)
+        foreach (var item in Grades)
         {
             Grade value = item.Value;
             total_gp += value.Credit * value.GradePoint;
@@ -132,7 +132,7 @@ public class Student : IStudent
     public double GetGPA()
     {
         double gpa = 0.00;
-        if(GetTotalCredit() > 0)
+        if (GetTotalCredit() > 0)
             gpa = GetTotalGradePoint() / GetTotalCredit();
         return gpa;
     }
@@ -140,16 +140,16 @@ public class Student : IStudent
     override public string ToString()
     {
         string courselist = "";
-        foreach(var item in Grades)
+        foreach (var item in Grades)
         {
             courselist += item.Key;
             courselist += "\n";
         }
-        string result = 
-            $"\nStudent Name :{this.Name}\n"+
-            $"Student ID :{this.ID}\n"+
+        string result =
+            $"\nStudent Name :{this.Name}\n" +
+            $"Student ID :{this.ID}\n" +
             $"Course Information Below:\n" +
-            $"Course Names:\n{courselist}\n"+
+            $"Course Names:\n{courselist}\n" +
             $"Total Credit = {this.GetTotalCredit()}\n" +
             $"Total Grade Point = {this.GetTotalGradePoint()}\n" +
             $"GPA = {this.GetGPA()}\n";
