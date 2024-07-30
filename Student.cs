@@ -23,7 +23,66 @@ public interface IStudent
 
 public class Student : IStudent
 {
-    // 请仅在此处实现接口，不要在此处以外的地方进行任何修改
-    // 请尽可能周全地考虑鲁棒性
-    // 提交作业时请删除这 3 行注释
+    public string Name { get; set; }
+    public int ID { get; set; }
+    public Dictionary<string, Grade> Grades { get; private set; } = new();
+    public Student(string name, string id)
+    {
+        Name = name;
+        if (int.TryParse(id, out int parsedId))
+        {
+            ID = parsedId;
+        }
+        else
+        {
+            throw new ArgumentException("无效的学生ID。");
+        }
+    }
+    public void AddGrade(string course, string credit, string score)
+    {
+        if (int.TryParse(credit, out var creditValue) && int.TryParse(score, out var scoreValue))
+        {
+            Grades[course] = new Grade(creditValue, scoreValue);
+        }
+        else
+        {
+            throw new ArgumentException("无效的学分或成绩值。");
+        }
+    }
+    public void AddGrades(List<(string course, int credit, int score)> grades)
+    {
+        foreach (var (course, credit, score) in grades)
+        {
+            Grades[course] = new Grade(credit, score);
+        }
+    }
+    public void RemoveGrade(string course)
+    {
+        Grades.Remove(course);
+    }
+    public void RemoveGrades(List<string> courses)
+    {
+        foreach (var course in courses)
+        {
+            Grades.Remove(course);
+        }
+    }
+    public int GetTotalCredit()
+    {
+        return Grades.Values.Sum(g => g.Credit);
+    }
+    public double GetTotalGradePoint()
+    {
+        return Grades.Values.Sum(g => g.Credit * g.GradePoint);
+    }
+    public double GetGPA()
+    {
+        var totalCredit = GetTotalCredit();
+        return totalCredit == 0 ? 0 : GetTotalGradePoint() / totalCredit;
+    }
+    public override string ToString()
+    {
+        var gradesStr = string.Join(", ", Grades.Select(g => $"{g.Key}: {g.Value.Score}"));
+        return $"Name: {Name}, ID: {ID}, Grades: [{gradesStr}], GPA: {GetGPA():F2}";
+    }
 }
