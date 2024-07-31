@@ -23,7 +23,7 @@ public interface IStudent
 
 public class Student : IStudent
 {
- ublic string Name { get; set; }
+ public string Name { get; set; }
     public int ID { get; set; }
     public Dictionary<string, Grade> Grades { get; private set; }
 
