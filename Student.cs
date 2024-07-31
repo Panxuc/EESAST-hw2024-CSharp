@@ -23,23 +23,7 @@ public interface IStudent
 
 public class Student : IStudent
 {
- public class Grade
-    {
-        public int Credit { get; set; }
-        public int Score { get; set; }
-        public double GradePoint => CalculateGradePoint(Score);
-
-        private double CalculateGradePoint(int score)
-        {
-            if (score >= 90) return 4.0;
-            if (score >= 80) return 3.0;
-            if (score >= 70) return 2.0;
-            if (score >= 60) return 1.0;
-            return 0.0;
-        }
-    }
-
-    public string Name { get; set; }
+ ublic string Name { get; set; }
     public int ID { get; set; }
     public Dictionary<string, Grade> Grades { get; private set; }
 
@@ -48,6 +32,18 @@ public class Student : IStudent
         Name = name;
         ID = id;
         Grades = new Dictionary<string, Grade>();
+    }
+
+    public void AddGrade(string course, string credit, string score)
+    {
+        if (int.TryParse(credit, out int parsedCredit) && int.TryParse(score, out int parsedScore))
+        {
+            AddGrade(course, parsedCredit, parsedScore);
+        }
+        else
+        {
+            throw new ArgumentException("Credit and score must be valid integers");
+        }
     }
 
     public void AddGrade(string course, int credit, int score)
@@ -136,5 +132,20 @@ public class Student : IStudent
 
         sb.AppendLine($"Total GPA: {GetGPA():F2}");
         return sb.ToString();
+    }
+    public class Grade
+    {
+        public int Credit { get; set; }
+        public int Score { get; set; }
+        public double GradePoint => CalculateGradePoint(Score);
+
+        private double CalculateGradePoint(int score)
+        {
+            if (score >= 90) return 4.0;
+            if (score >= 80) return 3.0;
+            if (score >= 70) return 2.0;
+            if (score >= 60) return 1.0;
+            return 0.0;
+        }
     }
 }
