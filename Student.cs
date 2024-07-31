@@ -25,12 +25,12 @@ public class Student : IStudent
 {
     public string Name { get; set; }
     public int ID { get; set; }
-    public Dictionary<string, Grade> Grades { get; private set; }
+    public Dictionary<string, object> Grades { get; private set; }
     public Student(string name, int id)
     {
         Name = name;
         ID = id;
-        Grades = new Dictionary<string, Grade>();
+        Grades = new Dictionary<string, object>();
     }
     public void AddGrade(string course, string credit, string score)
     {
@@ -63,11 +63,11 @@ public class Student : IStudent
     }
     public int GetTotalCredit()
     {
-        return Grades.Values.Sum(g => g.Credit);
+        return Grades.Values.OfType<Grade>().Sum(g => g.Credit);
     }
     public double GetTotalGradePoint()
     {
-        return Grades.Values.Sum(g => g.GradePoint * g.Credit);
+        return Grades.Values.OfType<Grade>().Sum(g => g.GradePoint * g.Credit);
     }
     public double GetGPA()
     {
@@ -82,7 +82,8 @@ public class Student : IStudent
         sb.AppendLine("Grades:");
         foreach (var grade in Grades)
         {
-            sb.AppendLine($"Course: {grade.Key}, Credit: {grade.Value.Credit}, Score: {grade.Value.Score}, Grade Point: {grade.Value.GradePoint:F2}");
+            var g = (Grade)grade.Value;
+            sb.AppendLine($"Course: {grade.Key}, Credit: {g.Credit}, Score: {g.Score}, Grade Point: {g.GradePoint:F2}");
         }
         sb.AppendLine($"GPA: {GetGPA():F2}");
         return sb.ToString();
