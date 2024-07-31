@@ -96,9 +96,14 @@ public class Student : IStudent
         private double CalculateGradePoint(int score)
         {
             if (score >= 90) return 4.0;
-            if (score >= 80) return 3.0;
-            if (score >= 70) return 2.0;
-            if (score >= 60) return 1.0;
+            if (score >= 85) return 3.6;
+            if (score >= 80) return 3.3;
+            if (score >= 77) return 3.0;
+            if (score >= 73) return 2.6;
+            if (score >= 70) return 2.3;
+            if (score >= 67) return 2.0;
+            if (score >= 63) return 1.6;
+            if (score >= 60) return 1.3;
             return 0.0;
         }
     }
