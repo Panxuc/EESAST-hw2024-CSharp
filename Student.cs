@@ -25,65 +25,37 @@ public class Student : IStudent
 {
     public string Name { get; set; }
     public int ID { get; set; }
-    public Dictionary<string, IStudent.Grade> Grades { get; private set; }
+    public Dictionary<string, Grade> Grades { get; private set; }
     public Student(string name, int id)
     {
         Name = name;
         ID = id;
-        Grades = new Dictionary<string, IStudent.Grade>();
+        Grades = new Dictionary<string, Grade>();
     }
     public void AddGrade(string course, string credit, string score)
     {
         if (int.TryParse(credit, out int parsedCredit) && int.TryParse(score, out int parsedScore))
         {
-            AddGrade(course, parsedCredit, parsedScore);
+            Grades[course] = new Grade { Credit = parsedCredit, Score = parsedScore };
         }
         else
         {
             throw new ArgumentException("Credit and score must be valid integers");
         }
     }
-    public void AddGrade(string course, int credit, int score)
-    {
-        if (string.IsNullOrEmpty(course))
-        {
-            throw new ArgumentException("Course name cannot be null or empty");
-        }
-        if (credit <= 0)
-        {
-            throw new ArgumentException("Credit must be a positive number");
-        }
-        if (score < 0 || score > 100)
-        {
-            throw new ArgumentException("Score must be between 0 and 100");
-        }
-        Grades[course] = new IStudent.Grade { Credit = credit, Score = score };
-    }
     public void AddGrades(List<(string course, int credit, int score)> grades)
     {
-        if (grades == null || grades.Count == 0)
-        {
-            throw new ArgumentException("Grades list cannot be null or empty");
-        }
         foreach (var grade in grades)
         {
-            AddGrade(grade.course, grade.credit, grade.score);
+            AddGrade(grade.course, grade.credit.ToString(), grade.score.ToString());
         }
     }
     public void RemoveGrade(string course)
     {
-        if (string.IsNullOrEmpty(course))
-        {
-            throw new ArgumentException("Course name cannot be null or empty");
-        }
         Grades.Remove(course);
     }
     public void RemoveGrades(List<string> courses)
     {
-        if (courses == null || courses.Count == 0)
-        {
-            throw new ArgumentException("Courses list cannot be null or empty");
-        }
         foreach (var course in courses)
         {
             RemoveGrade(course);
@@ -99,8 +71,8 @@ public class Student : IStudent
     }
     public double GetGPA()
     {
-        int totalCredit = GetTotalCredit();
-        return totalCredit > 0 ? GetTotalGradePoint() / totalCredit : 0.0;
+        int totalCredits = GetTotalCredit();
+        return totalCredits == 0 ? 0.0 : GetTotalGradePoint() / totalCredits;
     }
     public override string ToString()
     {
@@ -108,11 +80,26 @@ public class Student : IStudent
         sb.AppendLine($"Student Name: {Name}");
         sb.AppendLine($"Student ID: {ID}");
         sb.AppendLine("Grades:");
-        foreach (var kvp in Grades)
+        foreach (var grade in Grades)
         {
-            sb.AppendLine($"  Course: {kvp.Key}, Credit: {kvp.Value.Credit}, Score: {kvp.Value.Score}, Grade Point: {kvp.Value.GradePoint:F2}");
+            sb.AppendLine($"Course: {grade.Key}, Credit: {grade.Value.Credit}, Score: {grade.Value.Score}, Grade Point: {grade.Value.GradePoint:F2}");
         }
-        sb.AppendLine($"Total GPA: {GetGPA():F2}");
+        sb.AppendLine($"GPA: {GetGPA():F2}");
         return sb.ToString();
+    }
+    // 嵌套的 Grade 类
+    public class Grade
+    {
+        public int Credit { get; set; }
+        public int Score { get; set; }
+        public double GradePoint => CalculateGradePoint(Score);
+        private double CalculateGradePoint(int score)
+        {
+            if (score >= 90) return 4.0;
+            if (score >= 80) return 3.0;
+            if (score >= 70) return 2.0;
+            if (score >= 60) return 1.0;
+            return 0.0;
+        }
     }
 }
