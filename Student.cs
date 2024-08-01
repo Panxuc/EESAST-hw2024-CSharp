@@ -25,6 +25,11 @@ public class Student : IStudent
     public string Name { get; set; }
     public int ID { get; set; }
     public Dictionary<string, Grade> Grades { get; } = new();
+    public Student(string name, int id)
+    {
+        Name = name;
+        ID = id;
+    }
     public void AddGrade(string course, string credit, string score)
     {
         if (!int.TryParse(credit, out int creditValue))
@@ -37,7 +42,7 @@ public class Student : IStudent
         }
         if (!Grades.ContainsKey(course))
         {
-            Grades[course] = new Grade { Credit = creditValue, Score = scoreValue };
+            Grades[course] = new Grade(creditValue, scoreValue);
         }
         else
         {
