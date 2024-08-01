@@ -23,5 +23,5 @@ public interface IStudent
 
 public class Student : IStudent
 {
-    
+    //请在此处补全
 }
