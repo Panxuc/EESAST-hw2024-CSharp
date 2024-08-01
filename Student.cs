@@ -22,14 +22,20 @@ public interface IStudent
 }
 public class Student : IStudent
 {
-     public string Name { get; set; }
+    public string Name { get; set; }
     public int ID { get; set; }
     public Dictionary<string, Grade> Grades { get; } = new();
-
-    public Student(string name, int id)
+    public Student(string name, string id)
     {
         Name = name;
-        ID = id;
+        if (int.TryParse(id, out int parsedId))
+        {
+            ID = parsedId;
+        }
+        else
+        {
+            throw new Exception("Invalid ID value");
+        }
     }
     public void AddGrade(string course, string credit, string score)
     {
