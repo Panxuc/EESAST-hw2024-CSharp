@@ -22,9 +22,10 @@ public interface IStudent
 }
 public class Student : IStudent
 {
-    public string Name { get; set; }
+ public string Name { get; set; }
     public int ID { get; set; }
     public Dictionary<string, Grade> Grades { get; } = new();
+
     public Student(string name, int id)
     {
         Name = name;
@@ -78,7 +79,6 @@ public class Student : IStudent
     {
         return Grades.Values.Sum(g => g.Credit);
     }
-
     public double GetTotalGradePoint()
     {
         return Grades.Values.Sum(g => g.GradePoint * g.Credit);
