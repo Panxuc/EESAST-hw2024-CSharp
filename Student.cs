@@ -37,7 +37,7 @@ public class Student : IStudent
         }
         if (!Grades.ContainsKey(course))
         {
-            Grades[course] = new Grade(creditValue, scoreValue);
+            Grades[course] = new Grade { Credit = creditValue, Score = scoreValue };
         }
         else
         {
@@ -69,16 +69,15 @@ public class Student : IStudent
             RemoveGrade(course);
         }
     }
-
     public int GetTotalCredit()
     {
         return Grades.Values.Sum(g => g.Credit);
     }
+
     public double GetTotalGradePoint()
     {
         return Grades.Values.Sum(g => g.GradePoint * g.Credit);
     }
-
     public double GetGPA()
     {
         int totalCredits = GetTotalCredit();
