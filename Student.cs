@@ -22,18 +22,19 @@ public interface IStudent
 }
 
 public class Grade
-    {
-        public string Course { get; }
-        public int Credit { get; }
-        public int Score { get; }
+{
+    public string Course { get; }
+    public int Credit { get; }
+    public int Score { get; }
 
-        public Grade(string course, int credit, int score)
-        {
-            Course = course;
-            Credit = credit;
-            Score = score;
-        }
+    public Grade(string course, int credit, int score)
+    {
+        Course = course;
+        Credit = credit;
+        Score = score;
     }
+}
+
 public class Student : IStudent
 {
     public string Name { get; set; }
