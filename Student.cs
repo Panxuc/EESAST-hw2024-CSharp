@@ -21,7 +21,7 @@ public interface IStudent
     public string ToString();
 }
 
-public class Grade
+public class _Grade
 {
     public string Course { get; }
     public int Credit { get; }
@@ -39,11 +39,11 @@ public class Student : IStudent
 {
     public string Name { get; set; }
     public int ID { get; set; }
-    public Dictionary<string, Grade> Grades { get; private set; }
+    public Dictionary<string, _Grade> Grades { get; private set; }
 
     public Student()
     {
-        Grades = new Dictionary<string, Grade>();
+        Grades = new Dictionary<string, _Grade>();
     }
 
     public void AddGrade(string course, string credit, string score)
@@ -52,7 +52,7 @@ public class Student : IStudent
         {
             throw new ArgumentException($"学生已存在课程 '{course}' 的成绩。");
         }
-        Grades[course] = new Grade(course, credit, score);
+        Grades[course] = new _Grade(course, credit, score);
     }
 
     public void AddGrades(List<(string course, int credit, int score)> grades)
