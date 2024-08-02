@@ -21,18 +21,7 @@ public interface IStudent
     public string ToString();
 }
 
-public class Student : IStudent
-{
-    public string Name { get; set; }
-    public int ID { get; set; }
-    public Dictionary<string, Grade> Grades { get; private set; }
-
-    public Student()
-    {
-        Grades = new Dictionary<string, Grade>();
-    }
-
-    public class Grade
+public class Grade
     {
         public string Course { get; }
         public int Credit { get; }
@@ -45,8 +34,18 @@ public class Student : IStudent
             Score = score;
         }
     }
+public class Student : IStudent
+{
+    public string Name { get; set; }
+    public int ID { get; set; }
+    public Dictionary<string, Grade> Grades { get; private set; }
 
-    public void AddGrade(string course, int credit, int score)
+    public Student()
+    {
+        Grades = new Dictionary<string, Grade>();
+    }
+
+    public void AddGrade(string course, string credit, string score)
     {
         if (Grades.ContainsKey(course))
         {
