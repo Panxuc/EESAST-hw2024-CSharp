@@ -22,8 +22,84 @@ public interface IStudent
 }
 
 public class Student : IStudent
-{
-    // 请仅在此处实现接口，不要在此处以外的地方进行任何修改
-    // 请尽可能周全地考虑鲁棒性
-    // 提交作业时请删除这 3 行注释
+{   
+    public string Name { get; set; }
+    public int ID { get; set; }
+    public Dictionary<string, Grade> Grades { get;set }
+
+    public Student()
+    {
+        Grades = new Dictionary<string, Grade>();
+    }
+
+    public class Grade
+    {
+        public string Course { get; }
+        public int Credit { get; }
+        public int Score { get; }
+
+        public Grade(string course, int credit, int score)
+        {
+            Course = course;
+            Credit = credit;
+            Score = score;
+        }
+    }
+
+    public void AddGrade(string course, int credit, int score)
+    {
+        if (Grades.ContainsKey(course))
+        {
+            throw new ArgumentException($"学生已存在课程 '{course}' 的成绩。");
+        }
+        Grades[course] = new Grade(course, credit, score);
+    }
+
+    public void AddGrades(List<(string course, int credit, int score)> grades)
+    {
+        foreach (var (course, credit, score) in grades)
+        {
+            AddGrade(course, credit, score);
+        }
+    }
+
+    public void RemoveGrade(string course)
+    {
+        if (!Grades.ContainsKey(course))
+        {
+            throw new ArgumentException($"学生没有课程 '{course}' 的成绩。");
+        }
+        Grades.Remove(course);
+    }
+
+    public void RemoveGrades(List<string> courses)
+    {
+        foreach (var course in courses)
+        {
+            RemoveGrade(course);
+        }
+    }
+
+    public int GetTotalCredit()
+    {
+        return Grades.Values.Sum(grade => grade.Credit);
+    }
+
+    public double GetTotalGradePoint()
+    {
+        return Grades.Values.Sum(grade => grade.Credit * grade.Score);
+    }
+
+    public double GetGPA()
+    {
+        if (GetTotalCredit() == 0) return 0;
+        return GetTotalGradePoint() / GetTotalCredit();
+    }
+
+    public override string ToString()
+    {
+        return $"学生姓名：{Name}, 学号：{ID}, GPA：{GetGPA():F2}";
+    }
 }
+
+
