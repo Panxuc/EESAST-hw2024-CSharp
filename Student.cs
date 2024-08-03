@@ -30,16 +30,16 @@ public class Student : IStudent
     
     public void AddGrade(string course, string credit, string score)
     {
-        if (int.TryParse(credit, out credit_int) && int.TryParse(score, out score_int))
+        if (int.TryParse(credit, out int credit_int) && int.TryParse(score, out int score_int))
         {
             Grades[course] = new Grade(credit_int, score_int);
         }
         else
-            Console.WriteLine("wrong input for credit or score.");
+            System.Console.WriteLine("wrong input for credit or score.");
     }
     public void AddGrades(List<(string course, int credit, int score)> grades)
     {
-        foreach((string course, int credit, int score) grade in grades)
+        foreach(var (course, credit, score) in grades)
         {
             AddGrade(course, credit.ToString(), score.ToString());
         }
@@ -47,9 +47,9 @@ public class Student : IStudent
     public void RemoveGrade(string course)
     {
         if (Grades.ContainsKey(course))
-            Grades.Removals.Remove(course);
+            Grades.Remove(course);
         else
-            Console.Writeline("no such course.");
+            System.Console.Writeline("no such course.");
     }
     public void RemoveGrades(List<string> courses)
     {
@@ -84,10 +84,10 @@ public class Student : IStudent
     public Student(string studname, string studid)
     {
         Name = studname;
-        if (int.TryParse(studid, out id))
+        if (int.TryParse(studid, out int id))
             ID = id;
         else
-            Console.Writeline("wrong input for ID.");
+            System.Console.Writeline("wrong input for ID.");
         Grades = new Dictionary<string, Grade>();
     }
 }
