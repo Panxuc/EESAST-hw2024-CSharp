@@ -11,7 +11,6 @@ public interface IStudent
     public string Name { get; set; }
     public int ID { get; set; }
     public Dictionary<string, Grade> Grades { get; }
-    
     public void AddGrade(string course, string credit, string score);
     public void AddGrades(List<(string course, int credit, int score)> grades);
     public void RemoveGrade(string course);
