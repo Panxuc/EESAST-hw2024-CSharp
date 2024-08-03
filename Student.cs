@@ -49,7 +49,7 @@ public class Student : IStudent
         if (Grades.ContainsKey(course))
             Grades.Remove(course);
         else
-            System.Console.Writeline("no such course.");
+            System.Console.WriteLine("no such course.");
     }
     public void RemoveGrades(List<string> courses)
     {
@@ -87,7 +87,7 @@ public class Student : IStudent
         if (int.TryParse(studid, out int id))
             ID = id;
         else
-            System.Console.Writeline("wrong input for ID.");
+            System.Console.WriteLine("wrong input for ID.");
         Grades = new Dictionary<string, Grade>();
     }
 }
