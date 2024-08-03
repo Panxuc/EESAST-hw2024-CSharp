@@ -11,6 +11,7 @@ public interface IStudent
     public string Name { get; set; }
     public int ID { get; set; }
     public Dictionary<string, Grade> Grades { get; }
+    
     public void AddGrade(string course, string credit, string score);
     public void AddGrades(List<(string course, int credit, int score)> grades);
     public void RemoveGrade(string course);
@@ -23,7 +24,70 @@ public interface IStudent
 
 public class Student : IStudent
 {
-    // 请仅在此处实现接口，不要在此处以外的地方进行任何修改
-    // 请尽可能周全地考虑鲁棒性
-    // 提交作业时请删除这 3 行注释
+    public string Name { get; set; }
+    public int ID { get; set; }
+    public Dictionary<string, Grade> Grades { get; }
+    
+    public void AddGrade(string course, string credit, string score)
+    {
+        if (int.TryParse(credit, out credit_int) && int.TryParse(score, out score_int))
+        {
+            Grades[course] = new Grade(credit_int, score_int);
+        }
+        else
+            Console.WriteLine("wrong input for credit or score.");
+    }
+    public void AddGrades(List<(string course, int credit, int score)> grades)
+    {
+        foreach((string course, int credit, int score) grade in grades)
+        {
+            AddGrade(course, credit.ToString(), score.ToString());
+        }
+    }
+    public void RemoveGrade(string course)
+    {
+        if (Grades.ContainsKey(course))
+            Grades.Removals.Remove(course);
+        else
+            Console.Writeline("no such course.");
+    }
+    public void RemoveGrades(List<string> courses)
+    {
+        foreach (string course in courses)
+        {
+            RemoveGrade(course);
+        }
+
+    }
+    public int GetTotalCredit()
+    {
+        int TotalCredit = 0;
+        foreach(Grade grade in Grades.Values)
+            TotalCredit += grade.Credit;
+        return TotalCredit;
+    }
+    public double GetTotalGradePoint()
+    {
+        double TotalGradePoint = 0;
+        foreach (Grade grade in Grades.Values)
+            TotalGradePoint += grade.GradePoint * grade.Credit;
+        return TotalGradePoint;
+    }
+    public double GetGPA()
+    {
+        return GetTotalGradePoint() / GetTotalCredit();
+    }
+    public string ToString()
+    {
+        return $"name:{Name}\nID:{ID}\ntotal credits:{GetTotalCredit()}\ntotal grade points:{GetTotalGradePoint()}\nGPA:{GetGPA()}";
+    }
+    public Student(string studname, string studid)
+    {
+        Name = studname;
+        if (int.TryParse(studid, out id))
+            ID = id;
+        else
+            Console.Writeline("wrong input for ID.");
+        Grades = new Dictionary<string, Grade>();
+    }
 }
