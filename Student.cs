@@ -56,7 +56,6 @@ public class Student : IStudent
         {
             RemoveGrade(course);
         }
-
     }
     public int GetTotalCredit()
     {
@@ -67,7 +66,7 @@ public class Student : IStudent
     }
     public double GetTotalGradePoint()
     {
-        double TotalGradePoint = 0;
+        double TotalGradePoint = 0.0;
         foreach (Grade grade in Grades.Values)
             TotalGradePoint += grade.GradePoint * grade.Credit;
         return TotalGradePoint;
@@ -76,7 +75,7 @@ public class Student : IStudent
     {
         return GetTotalGradePoint() / GetTotalCredit();
     }
-    public string ToString()
+    public override string ToString()
     {
         return $"name:{Name}\nID:{ID}\ntotal credits:{GetTotalCredit()}\ntotal grade points:{GetTotalGradePoint()}\nGPA:{GetGPA()}";
     }
