@@ -26,7 +26,7 @@ public class Student : IStudent
     public string Name { get; set; }
     public int ID { get; set; }
     public Dictionary<string, Grade> Grades { get; }
-    
+
     public void AddGrade(string course, string credit, string score)
     {
         if (int.TryParse(credit, out int credit_int) && int.TryParse(score, out int score_int))
@@ -38,7 +38,7 @@ public class Student : IStudent
     }
     public void AddGrades(List<(string course, int credit, int score)> grades)
     {
-        foreach(var (course, credit, score) in grades)
+        foreach (var (course, credit, score) in grades)
         {
             AddGrade(course, credit.ToString(), score.ToString());
         }
@@ -60,7 +60,7 @@ public class Student : IStudent
     public int GetTotalCredit()
     {
         int TotalCredit = 0;
-        foreach(Grade grade in Grades.Values)
+        foreach (Grade grade in Grades.Values)
             TotalCredit += grade.Credit;
         return TotalCredit;
     }
