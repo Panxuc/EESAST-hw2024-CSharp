@@ -30,7 +30,14 @@ public class Student : IStudent
     public Student(string name, int id)
     {
         Name = name ?? throw new ArgumentNullException(nameof(name));
-        ID = id;
+        if (int.TryParse(id, out int idValue))
+        {
+            ID = idValue;
+        }
+        else
+        {
+            throw new ArgumentException("Invalid ID format.");
+        }
     }
     public void AddGrade(string course, string credit, string score)
         {
