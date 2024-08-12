@@ -27,7 +27,7 @@ public class Student : IStudent
     public string Name { get; set; }
     public int ID { get; set; }
     public Dictionary<string, Grade> Grades => grades;
-    public Student(string name, int id)
+    public Student(string name, string id)
     {
         Name = name ?? throw new ArgumentNullException(nameof(name));
         if (int.TryParse(id, out int idValue))
