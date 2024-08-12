@@ -27,11 +27,20 @@ public class Student : IStudent
     public string Name { get; set; }
     public int ID { get; set; }
     public Dictionary<string, Grade> Grades => grades;
+    public Student(string name, int id)
+    {
+        Name = name ?? throw new ArgumentNullException(nameof(name));
+        ID = id;
+    }
+    public Student(int id)
+    {
+        ID = id;
+    }
     public void AddGrade(string course, string credit, string score)
         {
             if (int.TryParse(credit, out int creditValue) && double.TryParse(score, out double scoreValue))
             {
-                grades[course] = new Grade { Credit = creditValue, Score = scoreValue };
+                grades[course] = new Grade(creditValue,(int)scoreValue);
             }
             else
             {
@@ -42,7 +51,7 @@ public class Student : IStudent
         {
             foreach (var grade in grades)
             {
-                this.grades[grade.course] = new Grade { Credit = grade.credit, Score = grade.score };
+                this.grades[grade.course] = new Grade(grade.credit, grade.score);
             }
         }
     public void RemoveGrade(string course)
