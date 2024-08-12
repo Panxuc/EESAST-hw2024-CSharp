@@ -25,7 +25,7 @@ public class Student : IStudent
 {
     private Dictionary<string, Grade> grades = new Dictionary<string, Grade>();
     public string Name { get; set; }
-    public int ID { get; private set; }
+    public int ID { get; set; }
     public Dictionary<string, Grade> Grades => grades;
     public Student(string name, string id)
     {
