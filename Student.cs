@@ -32,10 +32,6 @@ public class Student : IStudent
         Name = name ?? throw new ArgumentNullException(nameof(name));
         ID = id;
     }
-    public Student(int id)
-    {
-        ID = id;
-    }
     public void AddGrade(string course, string credit, string score)
         {
             if (int.TryParse(credit, out int creditValue) && double.TryParse(score, out double scoreValue))
