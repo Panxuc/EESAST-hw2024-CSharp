@@ -23,7 +23,77 @@ public interface IStudent
 
 public class Student : IStudent
 {
-    // 请仅在此处实现接口，不要在此处以外的地方进行任何修改
-    // 请尽可能周全地考虑鲁棒性
-    // 提交作业时请删除这 3 行注释
+    public string Name { get; set; }
+    public int ID { get; set; }
+    public Student(string name, string id)
+    {
+        Name = name;
+        try
+        {
+            ID = int.Parse(id);
+        }
+        catch
+        {
+            Console.WriteLine("Invalid ID, set id as null");
+        }
+    }
+    public Dictionary<string, Grade> Grades { get; } = new();
+    public void AddGrade(string course, string credit, string score)
+    {
+        int Score, Credit;
+        try
+        {
+            Credit = int.Parse(credit);
+        }
+        catch
+        {
+            Console.WriteLine("Invalid credit, set credit as 0");
+            Credit = 0;
+        }
+        try
+        {
+            Score = int.Parse(score);
+        }
+        catch
+        {
+            Console.WriteLine("Invalid score, set score as 0");
+            Score = 0;
+        }
+        var grade = new Grade(Credit, Score);
+        Grades.Add(course, grade);
+        Console.WriteLine("Grade added");
+    }
+    public void AddGrades(List<(string course, int credit, int score)> grades)
+    {
+        grades.ForEach(grade => AddGrade(grade.course, grade.credit.ToString(), grade.score.ToString()));
+    }
+    public void RemoveGrade(string course)
+    {
+        try
+        {
+            Grades.Remove(course);
+            Console.WriteLine("Course removed");
+        }
+        catch
+        {
+            Console.WriteLine("Course not found");
+        }
+    }
+    public void RemoveGrades(List<string> courses)
+    {
+        courses.ForEach(cs => RemoveGrade(cs));
+    }
+    public int GetTotalCredit() { return Grades.Values.Sum(grade => grade.Credit); }
+    public double GetTotalGradePoint()
+    {
+        return Grades.Values.Sum(grade => grade.GradePoint * grade.Credit);
+    }
+    public double GetGPA()
+    {
+        return GetTotalGradePoint() / GetTotalCredit();
+    }
+    public string ToString()
+    {
+        return string.Format("Name: {0}\nID: {1}\nGPA: {2}", Name, ID, GetGPA());
+    }
 }
