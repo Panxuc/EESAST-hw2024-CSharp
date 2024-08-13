@@ -81,7 +81,7 @@ public class Student : IStudent
     }
     public void RemoveGrades(List<string> courses)
     {
-        courses.Clear();
+        courses.ForEach(cs => RemoveGrade(cs));
     }
     public int GetTotalCredit() { return Grades.Values.Sum(grade => grade.Credit); }
     public double GetTotalGradePoint()
