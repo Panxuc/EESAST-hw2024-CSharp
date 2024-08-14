@@ -23,7 +23,23 @@ public interface IStudent
 
 public class Student : IStudent
 {
-    // 请仅在此处实现接口，不要在此处以外的地方进行任何修改
-    // 请尽可能周全地考虑鲁棒性
-    // 提交作业时请删除这 3 行注释
+    private string name;
+    private int id;
+    private Dictionary<string, Grade> grades;
+    public string Name
+    {
+        get => name;
+        private set       
+        {
+            name = value;        
+        }    
+    }
+    public int ID
+    {
+        get => id;
+        private set       
+        {
+            id = value;        
+        }    
+    }
 }
