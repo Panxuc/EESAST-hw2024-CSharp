@@ -26,6 +26,8 @@ public class Student : IStudent
     private string name;
     private int id;
     private Dictionary<string, Grade> Grades{ get; };
+    private List<(string course, int credit, int score)> grades;
+    private List<string> courses;
     public Student(string _name, int _id)
     {
         name = _name;
