@@ -15,6 +15,7 @@ public interface IStudent
     public void AddGrades(List<(string course, int credit, int score)> grades);
     public void RemoveGrade(string course);
     public void RemoveGrades(List<string> courses);
+    //比较奇怪，程序里没有看到AddGrades和RemoveGrades的使用
     public int GetTotalCredit();
     public double GetTotalGradePoint();
     public double GetGPA();
@@ -25,19 +26,17 @@ public class Student : IStudent
 {
     private string name;
     private int id;
-    private Dictionary<string, Grade> Grades{ get; };
-    private List<(string course, int credit, int score)> grades;
-    private List<string> courses;
-    public Student(string _name, int _id)
+    public Dictionary<string, Grade> Grades{ get; }
+    public Student(string _name, string _id)
     {
-        name = _name;
-        id = _id;
+        Name = _name;
+        ID = ConvertToInt(_id);
         Grades = new Dictionary<string, Grade>();
     }
     public string Name
     {
         get => name;
-        private set       
+        set       
         {
             name = value;        
         }    
@@ -45,16 +44,28 @@ public class Student : IStudent
     public int ID
     {
         get => id;
-        private set       
+        set       
         {
             id = value;        
         }    
+    }
+    private int ConvertToInt(string str)
+    {
+        int number;
+        if (int.TryParse(str, out number))
+        {
+            return number;
+        }
+        else
+        {
+            throw new ArgumentException("ID must be a valid integer.");
+        }
     }
     public void AddGrade(string course, string credit, string score)
     {
         if (int.TryParse(credit, out int cred) && int.TryParse(score, out int scr))
         {
-            Grades[course] = new Grade(course, cred, scr);
+            Grades[course] = new Grade(cred, scr);
         }
     }
 
@@ -62,7 +73,7 @@ public class Student : IStudent
     {
         foreach (var grade in grades)
         {
-            Grades[grade.course] = new Grade(grade.course, grade.credit, grade.score);
+            Grades[grade.course] = new Grade(grade.credit, grade.score);
         }
     }
 
@@ -91,13 +102,17 @@ public class Student : IStudent
 
     public double GetGPA()
     {
-        if (GetTotalCredit() == 0)
-            return 0.0;
-        return GetTotalGradePoint() / GetTotalCredit();
+        int totalCredits = GetTotalCredit();
+        if (totalCredits == 0)
+        {
+            // 抛出异常，指出不能计算GPA因为总学分为零
+            throw new InvalidOperationException("Cannot calculate GPA because total credit is zero.");
+        }
+        return GetTotalGradePoint() / totalCredits;
     }
 
     public override string ToString()
     {
-        return $"Name: {_name}, ID: {_id}, Grades: {{{string.Join(", ", Grades.Values.Select(grade => $"{grade.Course}: {grade.Score}/{grade.Credit}"))}}}}";
+        return $"Name: {Name}, ID: {ID}, GPA: {GetGPA()}";
     }
 }
