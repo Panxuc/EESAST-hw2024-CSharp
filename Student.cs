@@ -25,7 +25,13 @@ public class Student : IStudent
 {
     private string name;
     private int id;
-    private Dictionary<string, Grade> grades;
+    private Dictionary<string, Grade> Grades{ get; };
+    public Student(string _name, int _id)
+    {
+        name = _name;
+        id = _id;
+        Grades = new Dictionary<string, Grade>();
+    }
     public string Name
     {
         get => name;
@@ -41,5 +47,55 @@ public class Student : IStudent
         {
             id = value;        
         }    
+    }
+    public void AddGrade(string course, string credit, string score)
+    {
+        if (int.TryParse(credit, out int cred) && int.TryParse(score, out int scr))
+        {
+            Grades[course] = new Grade(course, cred, scr);
+        }
+    }
+
+    public void AddGrades(List<(string course, int credit, int score)> grades)
+    {
+        foreach (var grade in grades)
+        {
+            Grades[grade.course] = new Grade(grade.course, grade.credit, grade.score);
+        }
+    }
+
+    public void RemoveGrade(string course)
+    {
+        Grades.Remove(course);
+    }
+
+    public void RemoveGrades(List<string> courses)
+    {
+        foreach (var course in courses)
+        {
+            Grades.Remove(course);
+        }
+    }
+
+    public int GetTotalCredit()
+    {
+        return Grades.Values.Sum(grade => grade.Credit);
+    }
+
+    public double GetTotalGradePoint()
+    {
+        return Grades.Values.Sum(grade => grade.GradePoint * grade.Credit);
+    }
+
+    public double GetGPA()
+    {
+        if (GetTotalCredit() == 0)
+            return 0.0;
+        return GetTotalGradePoint() / GetTotalCredit();
+    }
+
+    public override string ToString()
+    {
+        return $"Name: {_name}, ID: {_id}, Grades: {{{string.Join(", ", Grades.Values.Select(grade => $"{grade.Course}: {grade.Score}/{grade.Credit}"))}}}}";
     }
 }
