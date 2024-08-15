@@ -15,6 +15,7 @@ public interface IStudent
     public void AddGrades(List<(string course, int credit, int score)> grades);
     public void RemoveGrade(string course);
     public void RemoveGrades(List<string> courses);
+    //±È½ÏÆæ¹Ö£¬³ÌĞòÀïÃ»ÓĞ¿´µ½AddGradesºÍRemoveGradesµÄÊ¹ÓÃ
     public int GetTotalCredit();
     public double GetTotalGradePoint();
     public double GetGPA();
@@ -23,7 +24,95 @@ public interface IStudent
 
 public class Student : IStudent
 {
-    // è¯·ä»…åœ¨æ­¤å¤„å®ç°æ¥å£ï¼Œä¸è¦åœ¨æ­¤å¤„ä»¥å¤–çš„åœ°æ–¹è¿›è¡Œä»»ä½•ä¿®æ”¹
-    // è¯·å°½å¯èƒ½å‘¨å…¨åœ°è€ƒè™‘é²æ£’æ€§
-    // æäº¤ä½œä¸šæ—¶è¯·åˆ é™¤è¿™ 3 è¡Œæ³¨é‡Š
+    private string name;
+    private int id;
+    public Dictionary<string, Grade> Grades { get; }
+    public Student(string _name, string _id)
+    {
+        Name = _name;
+        ID = ConvertToInt(_id);
+        Grades = new Dictionary<string, Grade>();
+    }
+    public string Name
+    {
+        get => name;
+        set
+        {
+            name = value;
+        }
+    }
+    public int ID
+    {
+        get => id;
+        set
+        {
+            id = value;
+        }
+    }
+    private int ConvertToInt(string str)
+    {
+        int number;
+        if (int.TryParse(str, out number))
+        {
+            return number;
+        }
+        else
+        {
+            throw new ArgumentException("ID must be a valid integer.");
+        }
+    }
+    public void AddGrade(string course, string credit, string score)
+    {
+        if (int.TryParse(credit, out int cred) && int.TryParse(score, out int scr))
+        {
+            Grades[course] = new Grade(cred, scr);
+        }
+    }
+
+    public void AddGrades(List<(string course, int credit, int score)> grades)
+    {
+        foreach (var grade in grades)
+        {
+            Grades[grade.course] = new Grade(grade.credit, grade.score);
+        }
+    }
+
+    public void RemoveGrade(string course)
+    {
+        Grades.Remove(course);
+    }
+
+    public void RemoveGrades(List<string> courses)
+    {
+        foreach (var course in courses)
+        {
+            Grades.Remove(course);
+        }
+    }
+
+    public int GetTotalCredit()
+    {
+        return Grades.Values.Sum(grade => grade.Credit);
+    }
+
+    public double GetTotalGradePoint()
+    {
+        return Grades.Values.Sum(grade => grade.GradePoint * grade.Credit);
+    }
+
+    public double GetGPA()
+    {
+        int totalCredits = GetTotalCredit();
+        if (totalCredits == 0)
+        {
+            // Å×³öÒì³££¬Ö¸³ö²»ÄÜ¼ÆËãGPAÒòÎª×ÜÑ§·ÖÎªÁã
+            throw new InvalidOperationException("Cannot calculate GPA because total credit is zero.");
+        }
+        return GetTotalGradePoint() / totalCredits;
+    }
+
+    public override string ToString()
+    {
+        return $"Name: {Name}, ID: {ID}, GPA: {GetGPA()}";
+    }
 }
