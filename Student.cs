@@ -26,7 +26,7 @@ public class Student : IStudent
 {
     private string name;
     private int id;
-    public Dictionary<string, Grade> Grades{ get; }
+    public Dictionary<string, Grade> Grades { get; }
     public Student(string _name, string _id)
     {
         Name = _name;
@@ -36,18 +36,18 @@ public class Student : IStudent
     public string Name
     {
         get => name;
-        set       
+        set
         {
-            name = value;        
-        }    
+            name = value;
+        }
     }
     public int ID
     {
         get => id;
-        set       
+        set
         {
-            id = value;        
-        }    
+            id = value;
+        }
     }
     private int ConvertToInt(string str)
     {
