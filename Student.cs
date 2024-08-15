@@ -27,12 +27,12 @@ public class Student : IStudent
     public string Name { get; set; }
     public int ID { get; set; }
     public Dictionary<string, Grade> Grades { get; }//没有set意味着只能从外部访问但是不能直接修改它
-//字典类型,这个grade是另一个类的一个属性
+                                                    //字典类型,这个grade是另一个类的一个属性
     public Student(string studname, string studid)
     {
         Name = studname;
         if (int.TryParse(studid, out int id))
-                ID = id;
+            ID = id;
         else
             System.Console.WriteLine("wrong ID input.");
         Grades = new Dictionary<string, Grade>();//没有这行代码， Grades  将会是  null ，在后续对  Grades  字典的任何操作（如添加、删除成绩）都会导致  NullReferenceException  异常
@@ -90,5 +90,5 @@ public class Student : IStudent
     {
         return $"name:{Name}\nID:{ID}\ntotal credits:{GetTotalCredit()}\ntotal grade points:{GetTotalGradePoint()}\nGPA:{GetGPA()}";
     }
-     
+
 }
