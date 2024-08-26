@@ -27,7 +27,7 @@ public class Student : IStudent
     public int ID { get; set; }
     public Dictionary<string, Grade> Grades { get; } = new();
 
-    public Student(string name, int id)
+    public Student(string name, string id)
     {
         this.Name = name;
         this.ID = id;
