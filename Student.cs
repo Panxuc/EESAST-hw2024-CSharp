@@ -27,16 +27,16 @@ public class Student : IStudent
     public int ID { get; set; } 
     public Dictionary<string, Grade> Grades { get; }
 
-    public Student(string name, int id) 
+    public Student(string name, string id) 
     {
         Name = name;
-        ID = id;
+        ID = int.Parse(id);
         Grades = new Dictionary<string, Grade>();
     }
 
     public void AddGrade(string course, string credit, string score) 
     {
-        Grades.Add(course, new Grade(credit, score));
+        Grades.Add(course, new Grade(int.Parse(credit), int.Parse(score)));
     }
 
     public void AddGrades(List<(string course, int credit, int score)> grades)
