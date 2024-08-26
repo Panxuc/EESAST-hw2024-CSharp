@@ -24,7 +24,7 @@ public interface IStudent
 public class Student : IStudent
 {
     public string Name { get; set; }
-    public int ID { get; set; } 
+    public int ID { get; set; }
     public Dictionary<string, Grade> Grades { get; }
 
     public Student(string name, string id) 
