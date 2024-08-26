@@ -1,0 +1,19 @@
+name: format
+on:
+  push:
+    branches: main
+  pull_request:
+    branches: main
+jobs:
+  dotnet-format-checking:
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@v4
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 8.0.x
+    - name: Format Check
+      run: |
+        dotnet restore "./StudentGradeManager.sln"
+        dotnet format "./StudentGradeManager.sln" --severity error --no-restore --verify-no-changes
