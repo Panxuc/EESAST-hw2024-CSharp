@@ -23,7 +23,75 @@ public interface IStudent
 
 public class Student : IStudent
 {
-    // 请仅在此处实现接口，不要在此处以外的地方进行任何修改
-    // 请尽可能周全地考虑鲁棒性
-    // 提交作业时请删除这 3 行注释
+    public string Name { get; set; }
+    public int ID { get; set; }
+    public Dictionary<string, Grade> Grades { get; } = new();
+
+    public Student(string name, int id)
+    {
+        this.Name = name;
+        this.ID = id;
+    }
+
+    public void AddGrade(string course, int credit, int score)
+    {
+        Grades.Add(course, new Grade(credit, score));
+    }
+
+    public void AddGrades(List<(string course, int credit, int score)> grades)
+    {
+        foreach (var (course, credit, score) in grades)
+        {
+            Grades.Add(course, new Grade(credit, score));
+        }
+    }
+
+    public void RemoveGrade(string course)
+    {
+        Grades.Remove(course);
+    }
+
+    public void RemoveGrades(List<string> courses)
+    {
+        foreach (var course in courses)
+        {
+            Grades.Remove(course);
+        }
+    }
+
+    public int GetTotalCredit()
+    {
+        return Grades.Values.Sum(grade => grade.Credit);
+    }
+
+    public double GetTotalGradePoint()
+    {
+        return Grades.Values.Sum(grade => grade.GradePoint);
+    }
+
+    public double GetGPA()
+    {
+        int totalCredit = GetTotalCredit();
+        if (totalCredit == 0)
+        {
+            return 0;
+        }
+        return GetTotalGradePoint() / totalCredit;
+    }
+
+    public override string ToString()
+    {
+        var sb = new StringBuilder();
+        sb.AppendLine($"Name: {Name}");
+        sb.AppendLine($"ID: {ID}");
+        sb.AppendLine("Grades:");
+        foreach (var grade in Grades)
+        {
+            sb.AppendLine($"{grade.Key}: {grade.Value}");
+        }
+        sb.AppendLine($"Total Credit: {GetTotalCredit()}");
+        sb.AppendLine($"Total Grade Point: {GetTotalGradePoint()}");
+        sb.AppendLine($"GPA: {GetGPA()}");
+        return sb.ToString();
+    }
 }
