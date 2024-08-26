@@ -27,14 +27,14 @@ public class Student : IStudent
     public int ID { get; set; }
     public Dictionary<string, Grade> Grades { get; }
 
-    public Student(string name, string id) 
+    public Student(string name, string id)
     {
         Name = name;
         ID = int.Parse(id);
         Grades = new Dictionary<string, Grade>();
     }
 
-    public void AddGrade(string course, string credit, string score) 
+    public void AddGrade(string course, string credit, string score)
     {
         Grades.Add(course, new Grade(int.Parse(credit), int.Parse(score)));
     }
