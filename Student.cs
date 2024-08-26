@@ -67,7 +67,7 @@ public class Student : IStudent
 
     public double GetTotalGradePoint()
     {
-        return Grades.Values.Sum(grade => grade.GradePoint * grade.Credit);
+        return Grades.Values.Sum(grade => grade.Credit * grade.Score);
     }
 
     public double GetGPA()
