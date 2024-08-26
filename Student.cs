@@ -33,9 +33,19 @@ public class Student : IStudent
         this.ID = id;
     }
 
-    public void AddGrade(string course, int credit, int score)
+    public void AddGrade(string course, string credit, string score)
     {
-        Grades.Add(course, new Grade(credit, score));
+        int creditValue;
+        if (!int.TryParse(credit, out creditValue))
+        {
+            throw new ArgumentException("Invalid credit value. Expected an integer.");
+        }
+        int scoreValue;
+        if (!int.TryParse(score, out scoreValue))
+        {
+            throw new ArgumentException("Invalid score value. Expected an integer.");
+        }
+        Grades.Add(course, new Grade(creditValue, scoreValue));
     }
 
     public void AddGrades(List<(string course, int credit, int score)> grades)
