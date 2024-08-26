@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 public interface IStudent
 {
     public string Name { get; set; }
-    public string ID { get; set; }
+    public int ID { get; set; }
     public Dictionary<string, Grade> Grades { get; }
     public void AddGrade(string course, string credit, string score);
     public void AddGrades(List<(string course, int credit, int score)> grades);
@@ -72,7 +72,11 @@ public class Student : IStudent
 
     public double GetGPA()
     {
-        return GetTotalGradePoint() / GetTotalCredit();
+        if (GetTotalCredit() == 0)
+        {
+            return 0;
+        }
+        else return GetTotalGradePoint() / GetTotalCredit();
     }
 
     public override string ToString()
