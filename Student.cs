@@ -24,17 +24,17 @@ public interface IStudent
 public class Student : IStudent
 {
     public string Name { get; set; }
-    public string ID { get; set; }
+    public int ID { get; set; } 
     public Dictionary<string, Grade> Grades { get; }
 
-    public Student(string name, string id)
+    public Student(string name, int id) 
     {
         Name = name;
         ID = id;
         Grades = new Dictionary<string, Grade>();
     }
 
-    public void AddGrade(string course, string credit, string score)
+    public void AddGrade(string course, string credit, string score) 
     {
         Grades.Add(course, new Grade(credit, score));
     }
@@ -43,7 +43,7 @@ public class Student : IStudent
     {
         foreach (var grade in grades)
         {
-            Grades.Add(grade.course, new Grade(grade.credit.ToString(), grade.score.ToString()));
+            Grades.Add(grade.course, new Grade(grade.credit, grade.score));
         }
     }
 
@@ -67,7 +67,7 @@ public class Student : IStudent
 
     public double GetTotalGradePoint()
     {
-        return Grades.Values.Sum(grade => grade.GradePoint*grade.Credit);
+        return Grades.Values.Sum(grade => grade.GradePoint * grade.Credit);
     }
 
     public double GetGPA()
@@ -94,5 +94,4 @@ public class Student : IStudent
         sb.AppendLine($"GPA: {GetGPA()}");
         return sb.ToString();
     }
-
 }
